@@ -8,7 +8,7 @@
     using System.Runtime.InteropServices;
     using System.Text.RegularExpressions;
     using Extensions;
-    using MarkdownSharp;
+    using MarkdownDeep;
     using Models;
     using Nancy.Helpers;
     using Nancy.Testing;
@@ -23,7 +23,7 @@
         private static readonly IDictionary<string, Func<List<string>, object>>
             SubSettingParsers = new Dictionary<string, Func<List<string>, object>>();
 
-        private static readonly Markdown Markdown = new Markdown();
+        private static readonly Markdown Markdown = new Markdown {ExtraMode = true, SafeMode = false};
 
         static PostParser()
         {
