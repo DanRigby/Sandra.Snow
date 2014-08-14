@@ -107,6 +107,9 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebMarkupMin.Core">
+      <HintPath>..\packages\WebMarkupMin.Core.0.8.21\lib\net40\WebMarkupMin.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\.stuffz\AssemblyInfoVersion.cs">

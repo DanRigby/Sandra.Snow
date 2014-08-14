@@ -1,5 +1,7 @@
 ﻿namespace Snow.StaticFileProcessors
 {
+    using System;
+    using CsQuery.ExtensionMethods;
     using Extensions;
     using Models;
     using Nancy.Testing;
@@ -37,7 +39,15 @@
                     Directory.CreateDirectory(outputFolder);
                 }
 
-                File.WriteAllText(Path.Combine(outputFolder, "index.html"), result.Body.AsString());
+                var minifier = new WebMarkupMin.Core.Minifiers.HtmlMinifier();
+
+                string pageBody = result.Body.AsString();
+                var minificationResult = minifier.Minify(pageBody);
+
+                minificationResult.Errors.ForEach(x => Console.WriteLine(x.Message));
+                minificationResult.Warnings.ForEach(x => Console.WriteLine(x.Message));
+
+                File.WriteAllText(Path.Combine(outputFolder, "index.html"), minificationResult.MinifiedContent);
             }
         }
 
