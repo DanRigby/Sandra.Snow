@@ -1,8 +1,6 @@
 ﻿namespace Snow.StaticFileProcessors
 {
-    using System;
     using System.IO;
-    using CsQuery.ExtensionMethods;
     using Extensions;
     using Nancy.Testing;
 
@@ -26,15 +24,7 @@
                 Directory.CreateDirectory(Destination);
             }
 
-            var minifier = new WebMarkupMin.Core.Minifiers.HtmlMinifier();
-
-            string pageBody = result.Body.AsString();
-            var minificationResult = minifier.Minify(pageBody);
-
-            minificationResult.Errors.ForEach(x => Console.WriteLine(x.Message));
-            minificationResult.Warnings.ForEach(x => Console.WriteLine(x.Message));
-
-            File.WriteAllText(Path.Combine(Destination, "index.html"), minificationResult.MinifiedContent);
+            File.WriteAllText(Path.Combine(Destination, "index.html"), result.Body.AsString());
         }
     }
 }

@@ -5,7 +5,6 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using CsQuery.ExtensionMethods;
     using Enums;
     using Exceptions;
     using Extensions;
@@ -311,14 +310,7 @@
                     Directory.CreateDirectory(outputFolder);
                 }
 
-                var minifier = new WebMarkupMin.Core.Minifiers.HtmlMinifier();
-
-                var minificationResult = minifier.Minify(body);
-
-                minificationResult.Errors.ForEach(x => Console.WriteLine(x.Message));
-                minificationResult.Warnings.ForEach(x => Console.WriteLine(x.Message));
-
-                File.WriteAllText(outputFile, minificationResult.MinifiedContent);
+                File.WriteAllText(outputFile, body);
             }
             catch (Exception ex)
             {
