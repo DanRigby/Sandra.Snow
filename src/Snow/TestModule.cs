@@ -110,6 +110,8 @@
 
             Post["/atom"] = x => Response.AsAtom(Posts.Take(Settings.FeedSize), Settings.BlogTitle, Settings.SiteUrl, Settings.Author, Settings.Email, StaticFile);
 
+            Post["/jsonfeed"] = x => Response.AsJsonFeed(Posts.Take(Settings.FeedSize), Settings.BlogTitle, Settings.SiteUrl, Settings.Author, StaticFile);
+
             Post["/sitemap"] = x =>
             {
                 var publishedPosts = Posts.Where(post => post.Published == Published.True);

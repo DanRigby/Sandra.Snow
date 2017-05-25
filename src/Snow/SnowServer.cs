@@ -47,6 +47,7 @@
                     EnableDirectoryBrowsing = true,
                     FileSystem = new PhysicalFileSystem(Path.GetFullPath(Settings.Output))
                 };
+                fileSystem.StaticFileOptions.ServeUnknownFileTypes = true;
 
                 app.UseFileServer(fileSystem);
             }
