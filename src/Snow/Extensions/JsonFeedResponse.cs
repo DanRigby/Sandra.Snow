@@ -4,14 +4,10 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.ServiceModel.Syndication;
-    using System.Text;
     using System.Text.RegularExpressions;
-    using System.Xml;
     using JsonFeedNet;
     using Models;
     using Nancy;
-    using Nancy.IO;
 
     public class JsonFeedResponse : Response
     {
@@ -35,14 +31,14 @@
 
         private Action<Stream> GetContents(IEnumerable<Post> model)
         {
-            var items = new List<FeedItem>();
+            var items = new List<JsonFeedItem>();
 
             foreach (var post in model)
             {
                 // Replace all relative urls with full urls.
                 var contentHtml = Regex.Replace(post.Content, UrlRegex, m => siteUrl.TrimEnd('/') + "/" + m.Value.TrimStart('/'));
 
-                var item = new FeedItem
+                var item = new JsonFeedItem
                 {
                     Id = $"{siteUrl}{post.Url}",
                     Url = $"{siteUrl}{post.Url}",
@@ -50,7 +46,7 @@
                     ContentHtml = contentHtml,
                     DatePublished = post.Date.ToUniversalTime(),
                     DateModified = post.Date.ToUniversalTime(),
-                    Author = new Author { Name = this.author, },
+                    Author = new JsonFeedAuthor { Name = this.author, },
                     Tags = post.Categories.ToList()
                 };
 
@@ -63,21 +59,12 @@
                 Title = feedTitle,
                 HomePageUrl = siteUrl,
                 FeedUrl = $"{siteUrl}/{feedfileName}",
-                //Author TBD once I fix the library.
+                Author = new JsonFeedAuthor { Name = this.author, },
                 Expired = false,
                 Items = items
             };
 
-            return stream =>
-            {
-                var encoding = new UTF8Encoding(false);
-                var streamWrapper = new UnclosableStreamWrapper(stream);
-
-                using (var writer = new StreamWriter(streamWrapper, encoding))
-                {
-                    writer.Write(feed);
-                }
-            };
+            return stream => { feed.Write(stream); };
         }
     }
 }
